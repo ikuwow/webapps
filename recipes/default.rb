@@ -11,6 +11,6 @@ package "vim" do
     action :install
 end
 
-# httpd_service 'default' do
-#     action :create
-# end
+httpd_service 'default' do
+    action :create
+end
