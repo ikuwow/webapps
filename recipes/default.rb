@@ -7,10 +7,4 @@
 # All rights reserved - Do Not Redistribute
 #
 
-package "vim" do
-    action :install
-end
-
-httpd_service 'default' do
-    action :create
-end
+include_recipe 'apache2'
