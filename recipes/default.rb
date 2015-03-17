@@ -28,10 +28,16 @@ user "Web user" do
     action :create
 end
 
+directory "/home/#{web_user}" do
+    user web_user
+    group web_group
+    mode 0700
+    action :create
+end
+
 directory "/home/#{web_user}/.ssh/" do
     user web_user
     group web_group
-    recursive true
     mode 0700
     action :create
 end
