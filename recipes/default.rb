@@ -54,6 +54,14 @@ file "/home/#{web_user}/.ssh/id_rsa.pub" do
     action :create
 end
 
+file "/home/#{web_user}/.ssh/config" do
+    content "Host github.com\n    StrictHostKeyChecking no\n"
+    user web_user
+    group web_user
+    mode 0600
+    action :create
+end
+
 # install and configure apache2
 include_recipe 'apache2'
 
