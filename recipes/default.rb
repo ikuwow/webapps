@@ -36,14 +36,7 @@ directory "/home/#{web_user}/.ssh/" do
     action :create
 end
 
-begin
-    ssh_keys = Chef::EncryptedDataBagItem.load("apache","ssh_keys");
-rescue
-    ssh_keys = {
-        "public" => "This is public key.",
-        "private" => "This is private key."
-    }
-end
+ssh_keys = Chef::EncryptedDataBagItem.load("apache","ssh_keys");
 
 file "/home/#{web_user}/.ssh/id_rsa" do
     content ssh_keys["private"]
