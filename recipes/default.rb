@@ -13,16 +13,18 @@ web_group = "apache"
 node.default['apache']['user'] = web_user
 node.default['apache']['group'] = web_group
 
-group web_group do
-    system true
+group "Web group" do
+    group_name web_group
+    system false
     action :create
 end
 
 user "Web user" do
     username web_user
     gid web_group
-    shell '/dev/null'
-    system true
+    home '/home/apache'
+    shell '/bin/bash'
+    system false
     action :create
 end
 
