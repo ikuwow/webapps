@@ -9,16 +9,14 @@
 
 include_recipe 'webapps::default'
 
-=begin
 deploy 'query_ok' do
-    repo "" 
+    repo "git@github.com:ikuwow/query_ok.git" 
     revision "master"
     deploy_to "/var/www/html/query_ok"
     user node['apache']['user']
     group node['apache']['group']
     action :deploy
 end
-=end
 
 web_app "query_ok" do
     docroot '/var/www/html/query_ok'

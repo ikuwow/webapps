@@ -12,5 +12,6 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[webapps::query_ok]
+      - recipe[webapps::default]
+      # - recipe[webapps::query_ok]
     attributes:
