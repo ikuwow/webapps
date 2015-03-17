@@ -9,17 +9,20 @@
 
 include_recipe 'webapps::default'
 
-deploy 'query_ok' do
-    repo "git@github.com:ikuwow/query_ok.git" 
+app_dir = "/var/www/html/query_ok"
+
+git 'query_ok' do
+    repository "git@github.com:ikuwow/query_ok.git" 
     revision "master"
-    deploy_to "/var/www/html/query_ok"
+    checkout_branch "master"
+    destination app_dir
     user node['apache']['user']
     group node['apache']['group']
-    action :deploy
+    action :sync
 end
 
 web_app "query_ok" do
-    docroot '/var/www/html/query_ok'
+    docroot app_dir
     template 'web_app.conf.erb'
     cookbook 'apache2'
     server_name 'ikuwow.website'
