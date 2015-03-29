@@ -1,3 +1,4 @@
 .kitchen/
 .kitchen.local.yml
 Berksfile.lock
+data_bag_key

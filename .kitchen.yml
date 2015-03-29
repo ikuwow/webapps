@@ -6,12 +6,14 @@ provisioner:
   name: chef_zero
 
 platforms:
-  - name: ubuntu-14.10
   - name: centos-6.6
+  - name: debian-7.8
+  - name: ubuntu-14.10
 
 suites:
   - name: default
+    data_bags_path: test/data_bags
+    encrypted_data_bag_secret_key_path: ./data_bag_key    
     run_list:
-      - recipe[webapps::default]
-      # - recipe[webapps::query_ok]
+      - recipe[webapps::query_ok]
     attributes:
