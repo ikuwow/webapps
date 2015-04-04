@@ -78,6 +78,13 @@ directory "/var/www/html" do
     action :create
 end
 
+directory "/var/www/html/uploads" do
+    user web_user
+    group web_group
+    mode 0755
+    action :create
+end
+
 package "git" do
     action :install
 end
