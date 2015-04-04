@@ -16,4 +16,5 @@ suites:
     encrypted_data_bag_secret_key_path: ./data_bag_key    
     run_list:
       - recipe[webapps::query_ok]
+      - recipe[webapps::ikuwow_top]
     attributes:
