@@ -24,7 +24,7 @@ end
 web_app "query_ok" do
     docroot app_dir
     template 'web_app.conf.erb'
-    cookbook 'apache2'
+    cookbook 'webapps' # My Template! Not apache2 template.
     server_name 'ikuwow.website'
 end
 
