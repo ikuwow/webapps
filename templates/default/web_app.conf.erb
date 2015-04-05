@@ -58,4 +58,11 @@
   RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
   RewriteCond %{SCRIPT_FILENAME} !maintenance.html
   RewriteRule ^.*$ /system/maintenance.html [L,R=503]
+
+  # ErrorDocuments
+  <% if @params[:error_documents] %>
+  <% @params[:error_documents].each do |code,document| %>
+  ErrorDocument <%= code %> <%= document %>
+  <% end %>
+  <% end %>
 </VirtualHost>
