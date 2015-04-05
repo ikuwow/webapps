@@ -17,4 +17,5 @@ suites:
     run_list:
       - recipe[webapps::query_ok]
       - recipe[webapps::ikuwow_top]
+      - recipe[webapps::php]
     attributes:
