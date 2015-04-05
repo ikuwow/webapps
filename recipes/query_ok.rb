@@ -14,7 +14,7 @@ app_dir = "/var/www/html/query_ok"
 git 'query_ok' do
     repository "git@github.com:ikuwow/query_ok.git" 
     revision "master"
-    checkout_branch "master"
+    checkout_branch "release"
     destination app_dir
     user node['apache']['user']
     group node['apache']['group']
@@ -25,7 +25,6 @@ ed = {
     '404' => '/error/404/index.html',
     '403' => '/error/403/index.html'
 }
-
 
 web_app "query_ok" do
     docroot app_dir

@@ -61,7 +61,10 @@ file "/home/#{web_user}/.ssh/id_rsa.pub" do
 end
 
 file "/home/#{web_user}/.ssh/config" do
-    content "Host github.com\n    StrictHostKeyChecking no\n"
+    content <<-EOC
+Host github.com
+    StrictHostKeyChecking no
+EOC
     user web_user
     group web_user
     mode 0600

@@ -14,7 +14,7 @@ app_dir = "/var/www/html/ikuwow_top"
 git 'query_ok' do
     repository "git@github.com:ikuwow/ikuwow_top.git" 
     revision "master"
-    checkout_branch "master"
+    checkout_branch "release"
     destination app_dir
     user node['apache']['user']
     group node['apache']['group']
@@ -24,7 +24,7 @@ end
 web_app "ikuwow_top" do
     docroot app_dir
     template 'web_app.conf.erb'
-    cookbook 'apache2'
+    cookbook 'webapps'
     server_name 'www.ikuwow.com'
 end
 
