@@ -28,7 +28,7 @@ package "php php-common" do
 end
 
 php_version = "5.6.7"
-build_option = '--prefix=/usr/local \
+build_option = "--prefix=/usr/local \
 --with-apxs2 \
 --enable-xml \
 --with-config-file-path=/etc \
@@ -42,7 +42,7 @@ build_option = '--prefix=/usr/local \
 --with-mysql \
 --with-pdo-mysql \
 --with-snmp \
---with-zlib'
+--with-zlib"
 
 check_uptodate = <<-EOC
 test `php -v | grep #{php_version}` > /dev/null -a `php -i | grep configure | sed -e "s/'//g" | cut -d ' ' -f7-`" = "#{build_option}"
@@ -54,6 +54,9 @@ bash "Fetch PHP" do
     wget http://jp2.php.net/distributions/php-#{php_version}.tar.gz
     tar xvf php-#{php_version}.tar.gz
     EOC
-    not_if { File.exists?("/tmp/php-#{php_version}") }
+    not_if { File.exists?("/tmp/php-#{php_version}") } || check_uptodate
+    # not_if check_uptodate+" -o -d '/tmp/php-#{php_version}'"
 end
+
+# log "#{check_uptodate} -o -d '/tmp/php-#{php_version}'"
 
