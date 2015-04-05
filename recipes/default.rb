@@ -73,6 +73,9 @@ end
 
 # install and configure apache2
 include_recipe 'apache2'
+if node['platform'] == 'debian'
+    package "apache2-mpm-prefork"
+end
 
 directory "/var/www/html" do
     user web_user

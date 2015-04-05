@@ -10,8 +10,8 @@
 include_recipe 'webapps::default'
 include_recipe 'build-essential::default'
 
-# Temporary only for centos 
-if node['platform'] != 'centos'
+# Temporary only for centos and debian 
+if !['centos', 'debian'].include?(node['platform'])
     raise NotImplementedError
 end
 
@@ -33,37 +33,65 @@ package "php php-common" do
 end
 
 # Dependent packages
-%w{libxml2 libxml2-devel libpng libpng-devel libjpeg libjpeg-devel
-    libvpx libvpx-devel openssl openssl-devel libcurl libcurl-devel
-    }.each do |p|
+case node['platform']
+when 'centos'
+
+    apache_service_name = "httpd"
+
+    dep_packages = %w{
+        libxml2 libxml2-devel libpng libpng-devel libjpeg libjpeg-devel
+        libvpx libvpx-devel openssl openssl-devel libcurl libcurl-devel
+    }
+
+    # add epel repository to yum
+    bash 'add_epel' do
+        user 'root'
+        code <<-EOC
+            rpm -ivh http://ftp.riken.jp/Linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
+            sed -i -e "s/enabled *= *1/enabled=0/g" /etc/yum.repos.d/epel.repo
+        EOC
+        creates "/etc/yum.repos.d/epel.repo"
+        not_if { File.exists?("/etc/yum.repos.d/epel.repo") }
+    end
+    
+    %w{libmcrypt libmcrypt-devel}.each do |p|
+        package "Install #{p} for PHP" do
+            package_name p
+            options "--enablerepo=epel"
+            action :install
+        end
+    end
+
+when 'debian'
+
+    apache_service_name = "apache2"
+
+    dep_packages = %w{
+        libxml2 libxml2-dev libcurl4-openssl-dev libvpx1 libvpx-dev
+        libjpeg8 libjpeg8-dev libpng12-dev libmcrypt4 libmcrypt-dev
+    }
+
+else
+    raise NotImplementedError
+end
+
+dep_packages.each do |p|
     package "Install #{p} for PHP" do
         package_name p
         action :install
     end
 end
 
-# add epel repository to yum
-bash 'add_epel' do
-  user 'root'
-  code <<-EOC
-    rpm -ivh http://ftp.riken.jp/Linux/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm
-    sed -i -e "s/enabled *= *1/enabled=0/g" /etc/yum.repos.d/epel.repo
-  EOC
-  creates "/etc/yum.repos.d/epel.repo"
-  not_if { File.exists?("/etc/yum.repos.d/epel.repo") }
-end
 
-%w{libmcrypt libmcrypt-devel}.each do |p|
-    package "Install #{p} for PHP" do
-        package_name p
-        options "--enablerepo=epel"
-        action :install
-    end
-end
 
 php_version = "5.6.7"
+if node['platform'] == 'debian'
+    apxs_path = "=/usr/bin/apxs2"
+else
+    apxs_path = ""
+end
 build_option = "--prefix=/usr/local \
---with-apxs2 \
+--with-apxs2#{apxs_path} \
 --enable-xml \
 --with-config-file-path=/etc \
 --enable-mbstring \
@@ -76,8 +104,6 @@ build_option = "--prefix=/usr/local \
 --with-mysql \
 --with-pdo-mysql \
 --with-zlib"
-
-# --with-snmp 
 
 check_uptodate = <<-EOC
 test `/usr/local/bin/php -v | grep #{php_version} > /dev/null;echo $?` -eq 0 -a "`/usr/local/bin/php -i | grep configure | sed -e "s/'//g" | cut -d ' ' -f7-`" = "#{build_option}"
@@ -101,6 +127,6 @@ bash "Build PHP" do
 end
 
 bash "Restart Apache to apply PHP changes" do
-    code "service httpd graceful"
+    code "service #{apache_service_name} graceful"
     action :nothing
 end
