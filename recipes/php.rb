@@ -14,9 +14,7 @@ include_recipe 'build-essential::default'
 case node['platform']
 when 'rhel', 'centos'
     devel_package = 'httpd-devel'
-when 'ubuntu'
-    devel_package = 'apache2-dev'
-when 'debian'
+when 'debian', 'ubuntu'
     devel_package = 'apache2-prefork-dev'
 else
     raise NotImplementedError
