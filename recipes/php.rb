@@ -10,10 +10,6 @@
 include_recipe 'webapps::default'
 include_recipe 'build-essential::default'
 
-# Temporary only for centos and debian 
-if !['centos', 'debian'].include?(node['platform'])
-    raise NotImplementedError
-end
 
 case node['platform']
 when 'rhel', 'centos'
@@ -62,12 +58,12 @@ when 'centos'
         end
     end
 
-when 'debian'
+when 'debian', 'ubuntu'
 
     apache_service_name = "apache2"
 
     dep_packages = %w{
-        libxml2 libxml2-dev libcurl4-openssl-dev libvpx1 libvpx-dev
+        pkg-config libxml2 libxml2-dev libcurl4-openssl-dev libvpx1 libvpx-dev
         libjpeg8 libjpeg8-dev libpng12-dev libmcrypt4 libmcrypt-dev
     }
 
@@ -130,3 +126,20 @@ bash "Restart Apache to apply PHP changes" do
     code "service #{apache_service_name} graceful"
     action :nothing
 end
+
+=begin
+build_option = "--prefix=/usr/local \
+--with-apxs2 \
+--enable-xml \
+--with-config-file-path=/etc \
+--enable-mbstring \
+--with-mcrypt \
+--with-openssl \
+--with-curl \
+--with-gd \
+--with-jpeg-dir=/usr \
+--with-vpx-dir=/usr \
+--with-mysql \
+--with-pdo-mysql \
+--with-zlib"
+=end
