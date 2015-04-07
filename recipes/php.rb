@@ -10,11 +10,14 @@
 include_recipe 'webapps::default'
 include_recipe 'build-essential::default'
 
-
 case node['platform']
 when 'rhel', 'centos'
     devel_package = 'httpd-devel'
 when 'debian', 'ubuntu'
+    bash "aptitude update && aptitude upgrade -y" do
+        code "aptitude update && aptitude upgrade -y"
+        action :run
+    end
     devel_package = 'apache2-prefork-dev'
 else
     raise NotImplementedError
@@ -112,32 +115,19 @@ bash "Fetch PHP" do
     not_if { File.exists?("/tmp/php-#{php_version}") } || check_uptodate
 end
 
+# ubuntu is not implemented..
+if node['platform'] != 'ubuntu'
 
-bash "Build PHP" do
-    cwd "/tmp/php-#{php_version}"
-    code "./configure #{build_option}  && make clean && make && make install | tee ./php-build.log"
-    not_if check_uptodate
-    notifies :run, "bash[Restart Apache to apply PHP changes]"
+    bash "Build PHP" do
+        cwd "/tmp/php-#{php_version}"
+        code "./configure #{build_option}  && make clean && make && make install | tee ./php-build.log"
+        not_if check_uptodate
+        notifies :run, "bash[Restart Apache to apply PHP changes]"
+    end
+    
+    bash "Restart Apache to apply PHP changes" do
+        code "service #{apache_service_name} graceful"
+        action :nothing
+    end
+
 end
-
-bash "Restart Apache to apply PHP changes" do
-    code "service #{apache_service_name} graceful"
-    action :nothing
-end
-
-=begin
-build_option = "--prefix=/usr/local \
---with-apxs2 \
---enable-xml \
---with-config-file-path=/etc \
---enable-mbstring \
---with-mcrypt \
---with-openssl \
---with-curl \
---with-gd \
---with-jpeg-dir=/usr \
---with-vpx-dir=/usr \
---with-mysql \
---with-pdo-mysql \
---with-zlib"
-=end
