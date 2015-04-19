@@ -50,8 +50,7 @@
   DirectoryIndex <%= [@params[:directory_index]].flatten.join " " %>
   <% end -%>
 
-  <% # if @params[:ssl] -%>
-  <% if false %>
+  <% if @params[:is_ssl] -%>
   # SSL Section
   SSLEngine on
   SSLCertificateFile <%= node['apache']['dir'] %>/keys/wildcard.ikuwow.com.crt
