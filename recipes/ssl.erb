@@ -1,0 +1,12 @@
+#
+# Cookbook Name:: webapps
+# Recipe:: ssl
+#
+# Copyright 2015, ikuwow
+#
+# All rights reserved - Do Not Redistribute
+#
+
+include_recipe 'webapps::default'
+include_recipe 'apache2::mod_ssl'
+

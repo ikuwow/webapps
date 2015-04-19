@@ -72,7 +72,6 @@ EOC
 end
 
 # install and configure apache2
-include_recipe 'apache2::mod_ssl'
 if node['platform'] == 'debian'
     package "apache2-mpm-prefork"
 end
