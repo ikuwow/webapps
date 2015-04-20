@@ -131,3 +131,18 @@ if node['platform'] != 'ubuntu'
     end
 
 end
+
+# php config
+template "#{node['apache']['dir']}/mods-available/php.conf" do
+    source "php.conf.erb"
+    owner "root"
+    group "root"
+    action :create
+end
+
+link "#{node['apache']['dir']}/mods-enabled/php.conf" do
+    owner "root"
+    group "root"
+    to "../mods-available/php.conf"
+    action :create 
+end
