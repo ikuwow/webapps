@@ -23,6 +23,7 @@ end
 
 web_app "ikuwow_top" do
     docroot app_dir
+    allow_override "All"
     template 'web_app.conf.erb'
     cookbook 'webapps'
     server_name 'www.ikuwow.com'
@@ -30,6 +31,7 @@ end
 
 web_app "ikuwow_top_ssl" do
     docroot app_dir
+    allow_override "All"
     is_ssl true
     template 'web_app.conf.erb'
     cookbook 'webapps'
