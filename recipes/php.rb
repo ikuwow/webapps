@@ -88,10 +88,11 @@ else
     apxs_path = ""
 end
 build_option = "--prefix=/usr/local \
---with-apxs2#{apxs_path} \
---enable-xml \
---with-config-file-path=/etc \
 --enable-mbstring \
+--enable-xml \
+--enable-zip \
+--with-apxs2#{apxs_path} \
+--with-config-file-path=/etc \
 --with-mcrypt \
 --with-openssl \
 --with-curl \
