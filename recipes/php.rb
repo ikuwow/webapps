@@ -100,6 +100,7 @@ build_option = "--prefix=/usr/local \
 --with-jpeg-dir=/usr \
 --with-vpx-dir=/usr \
 --with-mysql \
+--with-mysqli \
 --with-pdo-mysql \
 --with-zlib"
 
