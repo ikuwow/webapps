@@ -8,6 +8,7 @@
 #
 
 include_recipe 'webapps::ssl'
+include_recipe 'webapps::php'
 
 app_dir = "/var/www/html/twibots"
 

@@ -132,19 +132,33 @@ if node['platform'] != 'ubuntu'
         action :nothing
     end
 
+    # php config
+    template "#{node['apache']['dir']}/mods-available/php.conf" do
+        source "php.conf.erb"
+        owner "root"
+        group "root"
+        action :create
+    end
+    
+    link "#{node['apache']['dir']}/mods-enabled/php.conf" do
+        owner "root"
+        group "root"
+        to "../mods-available/php.conf"
+        action :create 
+    end
+    
+    package "curl" do
+        action :install
+    end
+    
+    bash "Install Composer" do
+        cwd "/tmp"
+        code <<-EOC
+        curl -sS https://getcomposer.org/installer | php
+        mv composer.phar /usr/local/bin/composer
+        EOC
+        creates "/usr/local/bin/composer"
+    end
+
 end
 
-# php config
-template "#{node['apache']['dir']}/mods-available/php.conf" do
-    source "php.conf.erb"
-    owner "root"
-    group "root"
-    action :create
-end
-
-link "#{node['apache']['dir']}/mods-enabled/php.conf" do
-    owner "root"
-    group "root"
-    to "../mods-available/php.conf"
-    action :create 
-end
