@@ -80,6 +80,7 @@ directory "/var/www/html" do
     user web_user
     group web_group
     mode 0755
+    recursive true
     action :create
 end
 
