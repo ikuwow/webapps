@@ -14,10 +14,6 @@ case node['platform']
 when 'rhel', 'centos'
     devel_package = 'httpd-devel'
 when 'debian', 'ubuntu'
-    bash "aptitude update && aptitude upgrade -y" do
-        code "aptitude update && aptitude upgrade -y"
-        action :run
-    end
     devel_package = 'apache2-prefork-dev'
 else
     raise NotImplementedError
