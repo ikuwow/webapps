@@ -50,7 +50,7 @@ when 'centos'
         creates "/etc/yum.repos.d/epel.repo"
         not_if { File.exists?("/etc/yum.repos.d/epel.repo") }
     end
-    
+
     %w{libmcrypt libmcrypt-devel}.each do |p|
         package "Install #{p} for PHP" do
             package_name p
@@ -59,13 +59,25 @@ when 'centos'
         end
     end
 
-when 'debian', 'ubuntu'
+when 'debian'
+
+    apache_service_name = "apache2"
+
+    dep_packages = %w{
+        pkg-config libxml2 libxml2-dev libssl-dev libcurl4-openssl-dev libvpx1 libvpx-dev
+        libpng12-dev libmcrypt4 libmcrypt-dev
+        libjpeg-dev
+    }
+        # libjpeg8 libjpeg8-dev
+
+when 'ubuntu'
 
     apache_service_name = "apache2"
 
     dep_packages = %w{
         pkg-config libxml2 libxml2-dev libcurl4-openssl-dev libvpx1 libvpx-dev
-        libjpeg8 libjpeg8-dev libpng12-dev libmcrypt4 libmcrypt-dev
+        libpng12-dev libmcrypt4 libmcrypt-dev
+        libjpeg8 libjpeg8-dev
     }
 
 else
@@ -139,18 +151,18 @@ if node['platform'] != 'ubuntu'
         group "root"
         action :create
     end
-    
+
     link "#{node['apache']['dir']}/mods-enabled/php.conf" do
         owner "root"
         group "root"
         to "../mods-available/php.conf"
-        action :create 
+        action :create
     end
-    
+
     package "curl" do
         action :install
     end
-    
+
     bash "Install Composer" do
         cwd "/tmp"
         code <<-EOC
