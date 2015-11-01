@@ -13,6 +13,8 @@ web_group = "apache"
 node.default['apache']['user'] = web_user
 node.default['apache']['group'] = web_group
 
+node.default['apache']['prefork']
+
 group "Web group" do
     group_name web_group
     system false
