@@ -13,7 +13,7 @@ include_recipe 'apache2::mod_expires'
 app_dir = "/var/www/html/query_ok"
 
 git 'query_ok' do
-    repository "git@github.com:ikuwow/query_ok.git"
+    repository "https://github.com/ikuwow/query_ok.git"
     revision "master"
     checkout_branch "release"
     destination app_dir
