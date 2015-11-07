@@ -22,16 +22,11 @@ git 'query_ok' do
     action :sync
 end
 
-ed = {
-    '404' => '/error/404/index.html',
-    '403' => '/error/403/index.html'
-}
-
 web_app "query_ok" do
     docroot app_dir
     template 'web_app.conf.erb'
     cookbook 'webapps' # My Template! Not apache2 template.
-    error_documents ed
+    allow_override "All"
     server_name 'ikuwow.website'
 end
 
