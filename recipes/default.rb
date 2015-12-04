@@ -7,6 +7,15 @@
 # All rights reserved - Do Not Redistribute
 #
 
+case node['platform']
+when 'rhel', 'centos'
+    # nothing to do
+when 'debian', 'ubuntu'
+    bash "aptitude update"
+else
+    raise NotImplementedError
+end
+
 web_user = "apache"
 web_group = "apache"
 
@@ -73,9 +82,13 @@ EOC
     action :create
 end
 
+include_recipe "apache2::default"
+
 # install and configure apache2
 if node['platform'] == 'debian'
-    package "apache2-mpm-prefork"
+    %w{apache2-mpm-prefork libapache2-mod-php5}.each do |p|
+        package p
+    end
 end
 
 directory "/var/www/html" do
