@@ -18,4 +18,5 @@ suites:
       - recipe[webapps::query_ok]
       - recipe[webapps::ikuwow_top]
       - recipe[webapps::twibots]
+      - recipe[webapps::api_ikuwow]
     attributes:
