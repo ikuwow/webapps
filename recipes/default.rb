@@ -7,14 +7,15 @@
 # All rights reserved - Do Not Redistribute
 #
 
-case node['platform']
-when 'rhel', 'centos'
-    # nothing to do
-when 'debian', 'ubuntu'
-    bash "aptitude update"
-else
-    raise NotImplementedError
-end
+# case node['platform']
+# when 'rhel', 'centos'
+#     # nothing to do
+# when 'debian', 'ubuntu'
+#     bash "aptitude update"
+# else
+#     raise NotImplementedError
+# end
+## Warning: update may need rebooting
 
 web_user = "apache"
 web_group = "apache"
