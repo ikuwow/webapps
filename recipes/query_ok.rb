@@ -14,7 +14,7 @@ app_dir = "/var/www/html/query_ok"
 
 git 'query_ok' do
     repository "https://github.com/ikuwow/query_ok.git"
-    revision "master"
+    revision "old-on-testtube"
     checkout_branch "release"
     destination app_dir
     user node['apache']['user']
