@@ -39,23 +39,3 @@ web_app "ikuwow_top_ssl" do
     server_port 443
 end
 
-web_app "blog.ikuwow.com" do
-    docroot app_dir
-    allow_override "All"
-    template 'web_app.conf.erb'
-    cookbook 'webapps'
-    server_name 'blog.ikuwow.com'
-    server_port 80
-end
-
-web_app "ssl_blog.ikuwow.com" do
-    docroot app_dir
-    allow_override "All"
-    is_ssl true
-    template 'web_app.conf.erb'
-    cookbook 'webapps'
-    server_name 'blog.ikuwow.com'
-    server_port 443
-end
-
-
